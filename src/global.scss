@@ -24,3 +24,39 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+td, th {
+  border: 0 !important;
+  color: white;
+}
+
+.table {
+  width: 100%;
+  max-width: 100%;
+  background-image: linear-gradient(to bottom right, #053c9c, rgb(102, 87, 236)) !important;
+}
+.table-bordered {
+  border: none !important;
+}
+.monthview-current {
+  background-image: linear-gradient(to bottom right, #053c9c, rgb(102, 87, 236)) !important;
+  color: #f0f0f0;
+}
+
+.monthview-selected[_ngcontent-sip-c131] {
+  background-color: #993000 !important;
+  color: white;
+
+}
+.table-fixed {
+   table-layout: auto !important;
+}
+
+.accordion-css .modal-wrapper {
+  height: 90%;
+  top: 10%;
+  position: absolute;
+  display: block;
+  background: transparent !important;
+}
+.accordion-css ion-content { --background: transparent;}

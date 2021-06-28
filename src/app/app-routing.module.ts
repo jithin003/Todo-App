@@ -5,7 +5,15 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
-  }
+  },
+  {
+    path: 'add-todo',
+    loadChildren: () => import('./add-todo/add-todo.module').then( m => m.AddTodoPageModule)
+  },
+  {
+    path: 'accordion',
+    loadChildren: () => import('./accordion/accordion.module').then( m => m.AccordionPageModule)
+  },
 ];
 @NgModule({
   imports: [

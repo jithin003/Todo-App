@@ -1,17 +1,99 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
     <ion-title>
-      Tab 1
+      My Schedule
     </ion-title>
+    <!-- <ion-segment slot="secondary" value="calendar">
+      <ion-segment-button value="calendar">
+        <ion-icon name="calendar-outline"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="chat">
+        <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+      </ion-segment-button>
+
+    </ion-segment> -->
+
+    <ion-buttons slot="secondary">
+      <ion-button [class]="selected==calendar?'header-icon':''">
+        <ion-icon slot="icon-only" name="calendar-outline"></ion-icon>
+      </ion-button>
+      <ion-button [class]="selected==chat?'header-icon':''" (click)="showEvent()">
+        <ion-icon slot="icon-only" name="chatbox-ellipses-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+<ion-content>
+  <!-- <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Tab 1</ion-title>
     </ion-toolbar>
-  </ion-header>
+  </ion-header> -->
+  <ion-grid>
+    <ion-row>
+      <ion-col size="10">
+        <calendar [eventSource]="eventSource"
+            [calendarMode]="calendar.mode"
+            [currentDate]="calendar.currentDate"
+            (onEventSelected)="onEventSelected($event)"
+            (onTitleChanged)="onViewTitleChanged($event)"
+            (onTimeSelected)="onTimeSelected($event)"
+            [showEventDetail]="false"
+            step="30"
+            class="calendar">
+        </calendar>
+      </ion-col>
+      <ion-col>
+        <div class="currentDay">
+          {{selectedDay.getDate()}}
+        </div>
+        <p style="color: white;font-size:10px;">{{getEvent().length}} plans to do</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Next to be done</ion-card-subtitle>
+    </ion-card-header>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+    <ion-card-content>
+        <ion-row>
+          <ion-col size="3" style="border-right: 1px solid gray;">
+            {{getDayValue(getFirstObjectToNext()?.startTime)}}
+          </ion-col>
+          <ion-col>
+
+              <ion-label>
+                <h3>{{getFirstObjectToNext()?.title}}</h3>
+                <p>{{getFirstObjectToNext()?.desc}}</p>
+                <!-- <p>{{eventSource[0].desc}} <br> {{eventSource[0].startTime}} to {{eventSource[0].endTime}}</p> -->
+              </ion-label>
+
+
+          </ion-col>
+        </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <ion-list>
+    <ion-list-header lines="inset">
+      <ion-label><h1>Plan to do({{getEvent().length}})</h1></ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let toDo of getEvent()">
+      <ion-label>
+        <h3>{{toDo.title}}</h3>
+        <p>{{toDo.desc}} <br> {{toDo.startTime}} to {{toDo.endTime}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="danger" (click)="addEvent()">
+      <ion-icon name="pencil"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
 </ion-content>

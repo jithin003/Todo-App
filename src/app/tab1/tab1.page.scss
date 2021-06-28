@@ -1,0 +1,25 @@
+.header-icon {
+  border-bottom: 2px solid white !important;
+}
+
+.table-bordered[_ngcontent-jto-c5] {
+  //border: 1px solid #ddd !important;
+  //background-image: linear-gradient(to bottom right, #3880ff, rgb(233, 167, 250));
+}
+.table {
+  width: 100%;
+  max-width: 100%;
+  background-image: linear-gradient(to bottom right, #3880ff, rgb(233, 167, 250)) !important;
+}
+ion-grid{
+  background-image: linear-gradient(to bottom right, #053c9c, rgb(102, 87, 236)) !important;
+}
+
+.currentDay {
+  border-radius: 50px;
+  height: 48px;
+  width: 48px;
+  background-color: rgb(238, 77, 152);
+  padding: 15px;
+  margin-top: 100px;
+}
