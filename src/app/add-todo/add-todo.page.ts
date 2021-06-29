@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-add-todo',
@@ -7,7 +8,8 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./add-todo.page.scss'],
 })
 export class AddTodoPage implements OnInit {
-  event = {
+  toDoForm: FormGroup;
+  toDo = {
     title: '',
     desc: '',
     startTime: null,
@@ -15,24 +17,45 @@ export class AddTodoPage implements OnInit {
     allDay: true,
     status: true
   };
-  constructor(private modalCtrl: ModalController) { }
+  title = '';
+  desc = '';
+  startTime = null;
+  endTime = '';
+  allDay = true;
+  status = true;
+  constructor(private modalCtrl: ModalController, public formbuilder: FormBuilder,) {
+    this.toDoForm = formbuilder.group({
+      todotitle: ['', Validators.compose([Validators.required])],
+      desc: [''],
+      startTime: ['', Validators.compose([Validators.required])],
+      endTime: [''],
+    });
+  }
 
   ngOnInit() {
   }
 
   save() {
-    if (this.event.startTime !== null && this.event.title) {
-      this.modalCtrl.dismiss({event: this.event})
+    console.log(this.toDoForm)
+    if (this.toDoForm.valid) {
+      this.toDo.title = this.toDoForm.get('todotitle').value;
+      this.toDo.desc = this.toDoForm.get('desc').value;
+      this.toDo.startTime = this.toDoForm.get('startTime').value;
+      this.toDo.endTime = this.toDoForm.get('endTime').value;
+      this.toDo.allDay = true;
+      this.toDo.status = true;
+      console.log('Event:', this.toDo);
+      this.modalCtrl.dismiss({event: this.toDo});
     }
     else {
-      alert ('Please fill fields...')
+      alert ('Please fill fields...');
     }
   }
 
 
 
   onTimeSelected(ev) {
-    this.event.startTime = new Date(ev.selectedTime);
+    this.toDo.startTime = new Date(ev.selectedTime);
   }
 
   close() {

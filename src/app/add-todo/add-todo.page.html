@@ -4,7 +4,7 @@
       <ion-icon name="close" slot="icon-only"></ion-icon>
     </ion-button>
   </ion-buttons>
-  <ion-title>{{ event.title }}</ion-title>
+  <ion-title>{{ toDo.title }}</ion-title>
   <ion-buttons slot="end">
     <ion-button (click)="save()">
       <ion-icon name="checkmark" slot="icon-only"></ion-icon>
@@ -13,23 +13,46 @@
 </ion-toolbar>
 
 <ion-content>
-  <ion-item>
-    <ion-label position="stacked">Title</ion-label>
-    <ion-input tpye="text" [(ngModel)]="event.title"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="stacked">Description</ion-label>
-    <ion-input tpye="text" [(ngModel)]="event.desc"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="stacked">Start</ion-label>
-    <!-- <ion-input tpye="text" [(ngModel)]="event.startTime"></ion-input> -->
-    <ion-datetime displayFormat="D MMM YYYY H:mm" [(ngModel)]="event.startTime"></ion-datetime>
-  </ion-item>
-  <ion-item>
-    <ion-label position="stacked">End</ion-label>
-    <!-- <ion-input tpye="text" [(ngModel)]="event.endTime"></ion-input> -->
-    <ion-datetime displayFormat="D MMM YYYY H:mm" [(ngModel)]="event.endTime"></ion-datetime>
-  </ion-item>
+  <form [formGroup]="toDoForm">
+    <ion-item class="form-item">
+      <div class="form-group basic animated">
+          <div class="input-wrapper">
+            <ion-label position="stacked">Title</ion-label>
+            <ion-input type="text" formControlName="todotitle" class="form-control" id="todotitle"></ion-input>
+          </div>
+      </div>
+
+    </ion-item>
+    <ion-item class="form-item">
+      <div class="form-group basic animated">
+        <div class="input-wrapper">
+          <ion-label position="stacked">Description</ion-label>
+          <ion-input type="text" formControlName="desc" class="form-control" id="desc"></ion-input>
+        </div>
+      </div>
+    </ion-item>
+    <ion-item class="form-item">
+      <div class="form-group basic animated">
+        <div class="input-wrapper">
+          <ion-label position="stacked">Start</ion-label>
+          <!-- <ion-input tpye="text" [(ngModel)]="event.startTime"></ion-input> -->
+          <ion-datetime displayFormat="D MMM YYYY H:mm" formControlName="startTime" class="form-control" id="startTime"></ion-datetime>
+        </div>
+      </div>
+
+    </ion-item>
+    <ion-item class="form-item">
+      <div class="form-group basic animated">
+        <div class="input-wrapper">
+          <ion-label position="stacked">End</ion-label>
+          <!-- <ion-input tpye="text" [(ngModel)]="event.endTime"></ion-input> -->
+          <ion-datetime displayFormat="D MMM YYYY H:mm" formControlName="endTime" class="form-control" id="endTime"></ion-datetime>
+        </div>
+      </div>
+
+    </ion-item>
+    <!-- <button type="submit" class="btn btn-primary  mr-1 mb-1" (click)="save()">Save</button> -->
+  </form>
+
 
 </ion-content>

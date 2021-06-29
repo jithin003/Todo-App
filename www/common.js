@@ -15,15 +15,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _add_todo_page_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./add-todo.page.scss */ "m2IE");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ionic/angular */ "TEn/");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+
 
 
 
 
 
 let AddTodoPage = class AddTodoPage {
-    constructor(modalCtrl) {
+    constructor(modalCtrl, formbuilder) {
         this.modalCtrl = modalCtrl;
-        this.event = {
+        this.formbuilder = formbuilder;
+        this.toDo = {
             title: '',
             desc: '',
             startTime: null,
@@ -31,26 +34,47 @@ let AddTodoPage = class AddTodoPage {
             allDay: true,
             status: true
         };
+        this.title = '';
+        this.desc = '';
+        this.startTime = null;
+        this.endTime = '';
+        this.allDay = true;
+        this.status = true;
+        this.toDoForm = formbuilder.group({
+            todotitle: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_5__["Validators"].compose([_angular_forms__WEBPACK_IMPORTED_MODULE_5__["Validators"].required])],
+            desc: [''],
+            startTime: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_5__["Validators"].compose([_angular_forms__WEBPACK_IMPORTED_MODULE_5__["Validators"].required])],
+            endTime: [''],
+        });
     }
     ngOnInit() {
     }
     save() {
-        if (this.event.startTime !== null && this.event.title) {
-            this.modalCtrl.dismiss({ event: this.event });
+        console.log(this.toDoForm);
+        if (this.toDoForm.valid) {
+            this.toDo.title = this.toDoForm.get('todotitle').value;
+            this.toDo.desc = this.toDoForm.get('desc').value;
+            this.toDo.startTime = this.toDoForm.get('startTime').value;
+            this.toDo.endTime = this.toDoForm.get('endTime').value;
+            this.toDo.allDay = true;
+            this.toDo.status = true;
+            console.log('Event:', this.toDo);
+            this.modalCtrl.dismiss({ event: this.toDo });
         }
         else {
             alert('Please fill fields...');
         }
     }
     onTimeSelected(ev) {
-        this.event.startTime = new Date(ev.selectedTime);
+        this.toDo.startTime = new Date(ev.selectedTime);
     }
     close() {
         this.modalCtrl.dismiss();
     }
 };
 AddTodoPage.ctorParameters = () => [
-    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["ModalController"] }
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["ModalController"] },
+    { type: _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormBuilder"] }
 ];
 AddTodoPage = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
@@ -152,7 +176,8 @@ AddTodoPageModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
             _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"],
             _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["IonicModule"],
-            _add_todo_routing_module__WEBPACK_IMPORTED_MODULE_5__["AddTodoPageRoutingModule"]
+            _add_todo_routing_module__WEBPACK_IMPORTED_MODULE_5__["AddTodoPageRoutingModule"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_3__["ReactiveFormsModule"],
         ],
         declarations: [_add_todo_page__WEBPACK_IMPORTED_MODULE_6__["AddTodoPage"]]
     })
@@ -290,7 +315,7 @@ ExploreContainerComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorat
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-toolbar color=\"primary\">\n  <ion-buttons slot=\"start\">\n    <ion-button (click)=\"close()\">\n      <ion-icon name=\"close\" slot=\"icon-only\"></ion-icon>\n    </ion-button>\n  </ion-buttons>\n  <ion-title>{{ event.title }}</ion-title>\n  <ion-buttons slot=\"end\">\n    <ion-button (click)=\"save()\">\n      <ion-icon name=\"checkmark\" slot=\"icon-only\"></ion-icon>\n    </ion-button>\n  </ion-buttons>\n</ion-toolbar>\n\n<ion-content>\n  <ion-item>\n    <ion-label position=\"stacked\">Title</ion-label>\n    <ion-input tpye=\"text\" [(ngModel)]=\"event.title\"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label position=\"stacked\">Description</ion-label>\n    <ion-input tpye=\"text\" [(ngModel)]=\"event.desc\"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label position=\"stacked\">Start</ion-label>\n    <!-- <ion-input tpye=\"text\" [(ngModel)]=\"event.startTime\"></ion-input> -->\n    <ion-datetime displayFormat=\"D MMM YYYY H:mm\" [(ngModel)]=\"event.startTime\"></ion-datetime>\n  </ion-item>\n  <ion-item>\n    <ion-label position=\"stacked\">End</ion-label>\n    <!-- <ion-input tpye=\"text\" [(ngModel)]=\"event.endTime\"></ion-input> -->\n    <ion-datetime displayFormat=\"D MMM YYYY H:mm\" [(ngModel)]=\"event.endTime\"></ion-datetime>\n  </ion-item>\n\n</ion-content>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-toolbar color=\"primary\">\n  <ion-buttons slot=\"start\">\n    <ion-button (click)=\"close()\">\n      <ion-icon name=\"close\" slot=\"icon-only\"></ion-icon>\n    </ion-button>\n  </ion-buttons>\n  <ion-title>{{ toDo.title }}</ion-title>\n  <ion-buttons slot=\"end\">\n    <ion-button (click)=\"save()\">\n      <ion-icon name=\"checkmark\" slot=\"icon-only\"></ion-icon>\n    </ion-button>\n  </ion-buttons>\n</ion-toolbar>\n\n<ion-content>\n  <form [formGroup]=\"toDoForm\">\n    <ion-item class=\"form-item\">\n      <div class=\"form-group basic animated\">\n          <div class=\"input-wrapper\">\n            <ion-label position=\"stacked\">Title</ion-label>\n            <ion-input type=\"text\" formControlName=\"todotitle\" class=\"form-control\" id=\"todotitle\"></ion-input>\n          </div>\n      </div>\n\n    </ion-item>\n    <ion-item class=\"form-item\">\n      <div class=\"form-group basic animated\">\n        <div class=\"input-wrapper\">\n          <ion-label position=\"stacked\">Description</ion-label>\n          <ion-input type=\"text\" formControlName=\"desc\" class=\"form-control\" id=\"desc\"></ion-input>\n        </div>\n      </div>\n    </ion-item>\n    <ion-item class=\"form-item\">\n      <div class=\"form-group basic animated\">\n        <div class=\"input-wrapper\">\n          <ion-label position=\"stacked\">Start</ion-label>\n          <!-- <ion-input tpye=\"text\" [(ngModel)]=\"event.startTime\"></ion-input> -->\n          <ion-datetime displayFormat=\"D MMM YYYY H:mm\" formControlName=\"startTime\" class=\"form-control\" id=\"startTime\"></ion-datetime>\n        </div>\n      </div>\n\n    </ion-item>\n    <ion-item class=\"form-item\">\n      <div class=\"form-group basic animated\">\n        <div class=\"input-wrapper\">\n          <ion-label position=\"stacked\">End</ion-label>\n          <!-- <ion-input tpye=\"text\" [(ngModel)]=\"event.endTime\"></ion-input> -->\n          <ion-datetime displayFormat=\"D MMM YYYY H:mm\" formControlName=\"endTime\" class=\"form-control\" id=\"endTime\"></ion-datetime>\n        </div>\n      </div>\n\n    </ion-item>\n    <!-- <button type=\"submit\" class=\"btn btn-primary  mr-1 mb-1\" (click)=\"save()\">Save</button> -->\n  </form>\n\n\n</ion-content>\n");
 
 /***/ }),
 

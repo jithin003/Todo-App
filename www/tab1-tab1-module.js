@@ -5678,14 +5678,16 @@ let Tab1Page = class Tab1Page {
         this.storage.create();
         this.storage.get('toDos').then(data => {
             console.log('data', data);
-            this.eventSource = data;
-            data.forEach(element => {
-                if (element.endTime < new Date()) {
-                    element.allDay = false;
-                }
-            });
-            this.eventSource = data;
-            this.storage.set('toDos', data);
+            if (data) {
+                this.eventSource = data;
+                data.forEach(element => {
+                    if (element.endTime < new Date()) {
+                        element.allDay = false;
+                    }
+                });
+                this.eventSource = data;
+                this.storage.set('toDos', data);
+            }
         });
     }
     addEvent() {
@@ -5737,13 +5739,16 @@ let Tab1Page = class Tab1Page {
         console.log('selected:', this.convert(this.selectedDay));
         let currentDay = this.selectedDay;
         const endD = new Date(currentDay.setHours(23, 59, 59, 999));
-        const currentEvents = this.eventSource.filter(obj => {
-            console.log('obj.endTime', this.convert(obj.endTime));
-            return this.convert(obj.endTime) == this.convert(this.selectedDay);
-        });
-        console.log('events:', this.eventSource);
-        console.log('selected:', endD.toUTCString());
-        return currentEvents;
+        if (this.eventSource) {
+            const currentEvents = this.eventSource.filter(obj => {
+                console.log('obj.endTime', this.convert(obj.endTime));
+                return this.convert(obj.endTime) == this.convert(this.selectedDay);
+            });
+            console.log('events:', this.eventSource);
+            console.log('selected:', endD.toUTCString());
+            return currentEvents;
+        }
+        return [];
     }
     convert(str) {
         var date = new Date(str), mnth = ("0" + (date.getMonth() + 1)).slice(-2), day = ("0" + date.getDate()).slice(-2);
@@ -5753,16 +5758,22 @@ let Tab1Page = class Tab1Page {
         return obj.toLocaleTimeString();
     }
     getFirstObjectToNext() {
-        const currentEvents = this.eventSource.find(obj => {
-            return obj.allDay == true;
-        });
-        console.log('obj.endTime', this.eventSource);
-        return currentEvents;
+        if (this.eventSource) {
+            const currentEvents = this.eventSource.find(obj => {
+                return obj.allDay == true;
+            });
+            console.log('obj.endTime', this.eventSource);
+            return currentEvents;
+        }
+        return '';
     }
     getDayValue(value) {
         //
-        const obj = new Date(value);
-        return moment__WEBPACK_IMPORTED_MODULE_6__(obj).format('DD-MMM-YYYY');
+        if (value) {
+            const obj = new Date(value);
+            return moment__WEBPACK_IMPORTED_MODULE_6__(obj).format('DD-MMM-YYYY');
+        }
+        return '';
         // return new Date(obj.getFullYear(), obj.getMonth(), obj.getDate());
     }
 };
